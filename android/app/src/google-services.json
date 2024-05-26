@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "766401696299",
+    "project_id": "firstproject-bfc78",
+    "storage_bucket": "firstproject-bfc78.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766401696299:android:26381addd144730eea906e",
+        "android_client_info": {
+          "package_name": "com.example.sf_p"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcPRw8FyfdFyH1I8A7FXc0-126jhmEQXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
