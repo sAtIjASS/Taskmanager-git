@@ -40,11 +40,7 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
-    if (authService.user != null) {
-      return TaskScreen();
-    } else {
-      return LoginScreen();
-    }
+     return LoginScreen();
   }
 }
 
@@ -382,3 +378,4 @@ class RegistrationScreen extends StatelessWidget {
     );
   }
 }
+
