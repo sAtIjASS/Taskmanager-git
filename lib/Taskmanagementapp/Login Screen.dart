@@ -1,30 +1,53 @@
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import'Taskmanagement.dart';
-import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'auth.dart';
+import 'dart:io';
+import 'taskmanagement.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid
-  ? await Firebase.initializeApp(
+      ? await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: 'AIzaSyAcPRw8FyfdFyH1I8A7FXc0-126jhmEQXs',
           appId: '1:766401696299:android:26381addd144730eea906e',
           messagingSenderId: '766401696299',
           projectId: 'firstproject-bfc78'))
-  : await Firebase.initializeApp();
-  runApp(ChangeNotifierProvider(
-    create: (context) => AuthService(),
-    child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      : await Firebase.initializeApp();
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AuthService(),
+      child: MyApp(),
     ),
-  ));
+  );
 }
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: AuthWrapper(),
+    );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    if (authService.user != null) {
+      return TaskScreen();
+    } else {
+      return LoginScreen();
+    }
+  }
+}
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -135,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) =>  RegistrationScreen()),
+                          MaterialPageRoute(builder: (context) => RegistrationScreen()),
                         );
                       },
                     ),
@@ -156,9 +179,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-
-
-//This is the Class of the Provider
 class AuthService with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
@@ -185,31 +205,6 @@ class AuthService with ChangeNotifier {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//This is the Code Of the Registration Screen
 class RegistrationScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -350,9 +345,9 @@ class RegistrationScreen extends StatelessWidget {
                             _addressController.text.trim(),
                           );
                           if (_authController.error.value.isEmpty) {
-                           Navigator.push(context, MaterialPageRoute(builder: (context){
-                             return LoginScreen();
-                           }));
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return LoginScreen();
+                            }));
                           }
                         }
                       },
@@ -387,5 +382,3 @@ class RegistrationScreen extends StatelessWidget {
     );
   }
 }
-
-
