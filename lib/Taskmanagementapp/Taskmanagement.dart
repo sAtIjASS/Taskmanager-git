@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
+import 'Signoutscreen.dart';
+
 final TaskController taskController = Get.put(TaskController());
 
 // Variables to store the selected date and time in milliseconds and minutes respectively
@@ -184,6 +186,7 @@ class TaskScreen extends StatelessWidget {
                     child: Text("Set Task", style: TextStyle(color: Colors.white)),
                   ),
                 ),
+
                 SizedBox(height: 20,),
                 Expanded(
                   child: StreamBuilder<QuerySnapshot>(
@@ -442,34 +445,36 @@ void _showEditDialog(BuildContext context, String taskId, Map<String, dynamic> t
   showDialog(
     context: context,
     builder: (context) {
-      return AlertDialog(
-        title: Text('Edit Task'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+      return SingleChildScrollView(
+        child: AlertDialog(
+          title: Text('Edit Task'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(labelText: 'Title'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('CANCEL'),
             ),
-            TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
+            TextButton(
+              onPressed: () {
+                taskController.updateTask(taskId, titleController.text, descriptionController.text, taskData['date'] ?? 0, taskData['time'] ?? 0);
+                Navigator.of(context).pop();
+              },
+              child: Text('UPDATE'),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('CANCEL'),
-          ),
-          TextButton(
-            onPressed: () {
-              taskController.updateTask(taskId, titleController.text, descriptionController.text, taskData['date'] ?? 0, taskData['time'] ?? 0);
-              Navigator.of(context).pop();
-            },
-            child: Text('UPDATE'),
-          ),
-        ],
       );
     },
   );
